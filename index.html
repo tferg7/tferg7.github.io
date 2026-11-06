@@ -119,8 +119,13 @@ pre .c{color:var(--muted)}
 .tabgrid span{font-size:14.5px;color:var(--muted)}
 
 .repos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.repos a{display:block;background:var(--soft);border-radius:14px;padding:12px 14px;text-decoration:none;color:var(--ink);font-weight:500;font-size:15px}
-.repos a:hover{outline:2px solid var(--accent)}
+.repos li{display:flex;flex-direction:column;gap:4px;background:var(--soft);border-radius:14px;padding:12px 14px;font-size:15px}
+.repos .rname{font-weight:600}
+.repos .rdesc{color:var(--muted);font-size:13.5px;line-height:1.4}
+.repos .rlinks{margin-top:auto;font-size:14px}
+.repos .rlinks a,.repos .all a{color:var(--accent);font-weight:600;text-decoration:none}
+.repos .rlinks a:hover,.repos .all a:hover{text-decoration:underline}
+.repos .all{justify-content:center}
 .code-link{color:var(--accent);font-weight:600;text-decoration:none}
 .code-link:hover{text-decoration:underline}
 .edu{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
@@ -396,12 +401,12 @@ footer{padding-block:40px;color:var(--muted);font-size:14px;display:flex;justify
         <h3 id="web-h">Before analytics, I built web apps</h3>
         <p>My path into data started with code. These projects from my full-stack program are why I'm comfortable with APIs, databases, and building the tools that sit around the analysis.</p>
         <ul class="repos">
-          <li><a href="https://github.com/tferg7/mySQL_Employee_Tracker" target="_blank" rel="noopener">MySQL employee tracker</a></li>
-          <li><a href="https://github.com/tferg7/E-Commerce-Back-End" target="_blank" rel="noopener">E-commerce back end</a></li>
-          <li><a href="https://github.com/tferg7/mernbooksearch" target="_blank" rel="noopener">MERN book search</a></li>
-          <li><a href="https://github.com/tferg7/pwabudgettracker" target="_blank" rel="noopener">Budget tracker (PWA)</a></li>
-          <li><a href="https://github.com/tferg7/weather" target="_blank" rel="noopener">Weather dashboard</a></li>
-          <li><a href="https://github.com/tferg7" target="_blank" rel="noopener">All repos on GitHub →</a></li>
+          <li><span class="rname">Weather dashboard</span><span class="rdesc">Search any city for weather, UV index, and a 5-day forecast</span><span class="rlinks"><a href="https://tferg7.github.io/weather/" target="_blank" rel="noopener">Live demo</a> · <a href="https://github.com/tferg7/weather" target="_blank" rel="noopener">Code</a></span></li>
+          <li><span class="rname">MERN book search</span><span class="rdesc">Search Google Books and save favorites (demo mode)</span><span class="rlinks"><a href="https://tferg7.github.io/mernbooksearch/" target="_blank" rel="noopener">Live demo</a> · <a href="https://github.com/tferg7/mernbooksearch" target="_blank" rel="noopener">Code</a></span></li>
+          <li><span class="rname">Budget tracker (PWA)</span><span class="rdesc">Offline-ready budget app with a balance chart (demo mode)</span><span class="rlinks"><a href="https://tferg7.github.io/pwabudgettracker/" target="_blank" rel="noopener">Live demo</a> · <a href="https://github.com/tferg7/pwabudgettracker" target="_blank" rel="noopener">Code</a></span></li>
+          <li><span class="rname">MySQL employee tracker</span><span class="rdesc">Try the command-line menu in your browser</span><span class="rlinks"><a href="https://tferg7.github.io/mySQL_Employee_Tracker/" target="_blank" rel="noopener">Live demo</a> · <a href="https://github.com/tferg7/mySQL_Employee_Tracker" target="_blank" rel="noopener">Code</a></span></li>
+          <li><span class="rname">E-commerce back end</span><span class="rdesc">REST API docs with real sample responses</span><span class="rlinks"><a href="https://tferg7.github.io/E-Commerce-Back-End/" target="_blank" rel="noopener">Live demo</a> · <a href="https://github.com/tferg7/E-Commerce-Back-End" target="_blank" rel="noopener">Code</a></span></li>
+          <li class="all"><a href="https://github.com/tferg7" target="_blank" rel="noopener">All repos on GitHub →</a></li>
         </ul>
       </div>
     </article>

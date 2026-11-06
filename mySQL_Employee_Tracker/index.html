@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employee Tracker</title>
+<meta name="description" content="A Node.js and MySQL command-line app for managing departments, roles, and employees, with an in-browser demo.">
+<style>
+:root{--bg:#FBFAFE;--surface:#fff;--soft:#F3EFFA;--ink:#251B36;--muted:#6B6380;--line:#E4DEEF;--accent:#D9466F;--mint:#2E9C80;--term:#1d1726;--termink:#e9e4f2}
+@media (prefers-color-scheme:dark){:root{--bg:#16111F;--surface:#1F1829;--soft:#2A2236;--ink:#F2EEF8;--muted:#B3AAC4;--line:#3A3048;--accent:#F06A8F;--mint:#4CC3A2;--term:#0f0b15}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{padding:48px 0 16px}
+.eyebrow{font:600 12px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(32px,6vw,48px);line-height:1.1;margin:10px 0 12px}
+.lede{color:var(--muted);max-width:640px;margin:0 0 20px;font-size:18px}
+.links a{display:inline-block;margin:0 10px 10px 0;padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:600;border:1px solid var(--line);color:var(--ink);background:var(--surface)}
+.links a.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 0;padding:0;list-style:none}
+.chips li{background:var(--soft);border-radius:999px;padding:4px 12px;font:500 13px ui-monospace,Menlo,monospace}
+section{padding:24px 0}
+h2{font-size:24px;margin:0 0 12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px}
+.demo{display:grid;grid-template-columns:280px 1fr;gap:16px}
+.menu button,.form button{display:block;width:100%;text-align:left;margin-bottom:6px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--soft);color:var(--ink);font:14px system-ui,sans-serif;cursor:pointer}
+.menu button:hover{border-color:var(--accent)}
+.form{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.form label{display:block;font-size:13px;color:var(--muted);margin:8px 0 4px}
+.form input,.form select{width:100%;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:14px system-ui,sans-serif}
+.form button{background:var(--accent);color:#fff;border-color:var(--accent);text-align:center;margin-top:10px}
+.term{background:var(--term);color:var(--termink);border-radius:14px;padding:16px;font:13px/1.5 ui-monospace,Menlo,monospace;overflow:auto;min-height:340px;max-height:520px;white-space:pre}
+.term .prompt{color:#7ee0c3}.term .ok{color:#f6c56f}
+.steps{padding-left:20px}.steps li{margin-bottom:8px}
+code{font-family:ui-monospace,Menlo,monospace;font-size:14px}
+.video{position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;background:#000}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+footer{color:var(--muted);font-size:14px;padding:32px 0 48px}
+@media (max-width:760px){.demo{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="eyebrow">Command-line app · Node.js + MySQL</div>
+  <h1>Employee Tracker</h1>
+  <p class="lede">A menu-driven terminal app for viewing and managing a company's departments, roles, and employees, with joined views that show each person's title, department, salary, and manager.</p>
+  <div class="links">
+    <a class="primary" href="https://github.com/tferg7/mySQL_Employee_Tracker">View the code</a>
+    <a href="https://tferg7.github.io">Back to portfolio</a>
+  </div>
+  <ul class="chips"><li>Node.js</li><li>MySQL</li><li>mysql2</li><li>Inquirer</li><li>console.table</li></ul>
+</header>
+
+<main class="wrap">
+  <section aria-labelledby="demo-h">
+    <h2 id="demo-h">Try it in your browser</h2>
+    <p>This demo runs the same menu with the app's seed data, in memory. Nothing is saved; reload to start over.</p>
+    <div class="card demo">
+      <div>
+        <div class="menu" role="group" aria-label="Menu">
+          <button data-a="employees">View all employees</button>
+          <button data-a="roles">View all roles</button>
+          <button data-a="departments">View all departments</button>
+          <button data-a="add-dept">Add department</button>
+          <button data-a="add-role">Add role</button>
+          <button data-a="add-emp">Add employee</button>
+          <button data-a="update">Update employee role</button>
+        </div>
+        <form class="form" id="form" hidden></form>
+      </div>
+      <div class="term" id="term" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="vid-h">
+    <h2 id="vid-h">Walkthrough video</h2>
+    <p>Recorded in 2021, before the 2026 update that added joined views and pick-from-list menus.</p>
+    <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/oz0AgMqO3v4" title="Employee Tracker walkthrough" loading="lazy" allowfullscreen></iframe></div>
+  </section>
+
+  <section aria-labelledby="run-h">
+    <h2 id="run-h">Run it locally</h2>
+    <div class="card">
+      <ol class="steps">
+        <li>Install Node.js and MySQL, then run <code>npm install</code>.</li>
+        <li>Create and seed the database: <code>mysql -u root -p &lt; employee_DB.sql</code></li>
+        <li>Copy <code>.env.EXAMPLE</code> to <code>.env</code> and add your MySQL user and password.</li>
+        <li>Run <code>npm start</code> and choose from the menu.</li>
+      </ol>
+    </div>
+  </section>
+</main>
+<footer class="wrap">Built by Tyra Ferguson · <a href="https://github.com/tferg7">github.com/tferg7</a></footer>
+
+<script>
+// Same seed data as employee_DB.sql
+const db = {
+  department: [{ id: 1, name: "Sales" }, { id: 2, name: "Engineering" }, { id: 3, name: "Finance" }, { id: 4, name: "Legal" }],
+  role: [
+    { id: 1, title: "Lead Engineer", salary: 150000, department_id: 2 },
+    { id: 2, title: "Legal Team Lead", salary: 250000, department_id: 4 },
+    { id: 3, title: "Accountant", salary: 125000, department_id: 3 },
+    { id: 4, title: "Sales Lead", salary: 100000, department_id: 1 },
+    { id: 5, title: "Salesperson", salary: 80000, department_id: 1 },
+    { id: 6, title: "Software Engineer", salary: 120000, department_id: 2 },
+    { id: 7, title: "Lawyer", salary: 190000, department_id: 4 },
+  ],
+  employee: [
+    { id: 1, first_name: "Jessica", last_name: "Haze", role_id: 4, manager_id: null },
+    { id: 2, first_name: "Tiffany", last_name: "Patric", role_id: 1, manager_id: null },
+    { id: 3, first_name: "Mia", last_name: "Lam", role_id: 2, manager_id: null },
+    { id: 4, first_name: "Bently", last_name: "Lao", role_id: 6, manager_id: 2 },
+    { id: 5, first_name: "Chris", last_name: "Melby", role_id: 5, manager_id: 1 },
+    { id: 6, first_name: "Jason", last_name: "Baker", role_id: 3, manager_id: null },
+    { id: 7, first_name: "Tom", last_name: "Nice", role_id: 7, manager_id: 3 },
+  ],
+};
+const v = (id) => document.getElementById(id).value;
+const byId = (t, id) => db[t].find((r) => r.id === id);
+const nextId = (t) => Math.max(0, ...db[t].map((r) => r.id)) + 1;
+const term = document.getElementById("term");
+const form = document.getElementById("form");
+
+// print rows the way console.table does
+function table(title, rows) {
+  if (!rows.length) return `${title}\n(no rows)\n`;
+  const cols = Object.keys(rows[0]);
+  const w = cols.map((c) => Math.max(c.length, ...rows.map((r) => String(r[c]).length)));
+  const line = (vals) => vals.map((v, i) => String(v).padEnd(w[i])).join("  ");
+  const total = w.reduce((a, b) => a + b, 0) + 2 * (cols.length - 1);
+  return [title, "-".repeat(total), line(cols), line(w.map((n) => "-".repeat(n))), ...rows.map((r) => line(cols.map((c) => r[c])))].join("\n") + "\n";
+}
+function print(cmd, text, cls) {
+  const p = document.createElement("span");
+  p.className = "prompt";
+  p.textContent = `? What would you like to do? ${cmd}\n`;
+  const o = document.createElement("span");
+  if (cls) o.className = cls;
+  o.textContent = text + "\n";
+  term.append(p, o);
+  term.scrollTop = term.scrollHeight;
+}
+const views = {
+  employees: () => table("EMPLOYEES", db.employee.map((e) => {
+    const r = byId("role", e.role_id); const d = r && byId("department", r.department_id); const m = e.manager_id && byId("employee", e.manager_id);
+    return { id: e.id, first_name: e.first_name, last_name: e.last_name, title: r ? r.title : "null", department: d ? d.name : "null", salary: r ? r.salary : "null", manager: m ? `${m.first_name} ${m.last_name}` : "null" };
+  })),
+  roles: () => table("ROLES", db.role.map((r) => ({ id: r.id, title: r.title, salary: r.salary, department: (byId("department", r.department_id) || {}).name || "null" }))),
+  departments: () => table("DEPARTMENTS", db.department.map((d) => ({ id: d.id, name: d.name }))),
+};
+const opts = (rows, label) => rows.map((r) => `<option value="${r.id}">${label(r)}</option>`).join("");
+const empName = (e) => `${e.first_name} ${e.last_name}`;
+const forms = {
+  "add-dept": { title: "Add department", html: () => `<label for="f1">Department name</label><input id="f1" required>`,
+    run: () => { const name = v("f1").trim(); db.department.push({ id: nextId("department"), name }); return `Added department: ${name}`; } },
+  "add-role": { title: "Add role", html: () => `<label for="f1">Role title</label><input id="f1" required><label for="f2">Salary</label><input id="f2" type="number" min="0" required><label for="f3">Department</label><select id="f3">${opts(db.department, (d) => d.name)}</select>`,
+    run: () => { const title = v("f1").trim(); db.role.push({ id: nextId("role"), title, salary: Number(v("f2")), department_id: Number(v("f3")) }); return `Added role: ${title}`; } },
+  "add-emp": { title: "Add employee", html: () => `<label for="f1">First name</label><input id="f1" required><label for="f2">Last name</label><input id="f2"><label for="f3">Role</label><select id="f3">${opts(db.role, (r) => r.title)}</select><label for="f4">Manager</label><select id="f4"><option value="">None</option>${opts(db.employee, empName)}</select>`,
+    run: () => { const e = { id: nextId("employee"), first_name: v("f1").trim(), last_name: v("f2").trim(), role_id: Number(v("f3")), manager_id: v("f4") ? Number(v("f4")) : null }; db.employee.push(e); return `Added employee: ${empName(e)}`; } },
+  update: { title: "Update employee role", html: () => `<label for="f1">Employee</label><select id="f1">${opts(db.employee, empName)}</select><label for="f2">New role</label><select id="f2">${opts(db.role, (r) => r.title)}</select>`,
+    run: () => { byId("employee", Number(v("f1"))).role_id = Number(v("f2")); return "Employee role updated."; } },
+};
+let current = null;
+document.querySelectorAll(".menu button").forEach((btn) => btn.addEventListener("click", () => {
+  const a = btn.dataset.a;
+  if (views[a]) { form.hidden = true; print(btn.textContent, views[a]()); return; }
+  current = a;
+  form.innerHTML = forms[a].html() + `<button type="submit">${forms[a].title}</button>`;
+  form.hidden = false;
+  form.querySelector("input,select").focus();
+}));
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const msg = forms[current].run();
+  form.hidden = true;
+  print(forms[current].title, msg, "ok");
+});
+term.textContent = "Connected (in-browser demo)\n\n";
+print("View all employees", views.employees());
+</script>
+</body>
+</html>

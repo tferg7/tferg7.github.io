@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/mernbooksearch/static/css/main.4f47b2e9.css",
+    "main.js": "/mernbooksearch/static/js/main.226beb1a.js",
+    "static/js/453.818d8533.chunk.js": "/mernbooksearch/static/js/453.818d8533.chunk.js",
+    "index.html": "/mernbooksearch/index.html",
+    "main.4f47b2e9.css.map": "/mernbooksearch/static/css/main.4f47b2e9.css.map",
+    "main.226beb1a.js.map": "/mernbooksearch/static/js/main.226beb1a.js.map",
+    "453.818d8533.chunk.js.map": "/mernbooksearch/static/js/453.818d8533.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4f47b2e9.css",
+    "static/js/main.226beb1a.js"
+  ]
+}
