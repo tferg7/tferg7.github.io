@@ -202,11 +202,12 @@ footer{padding-block:40px;color:var(--muted);font-size:14px;display:flex;justify
   <section id="work" aria-labelledby="work-h">
     <div class="sec-head">
       <h2 id="work-h">Selected projects</h2>
-      <p class="note">LSU M.S. Analytics coursework, 2026</p>
+      <p class="note">LSU M.S. Analytics coursework, 2025–2026</p>
     </div>
     <nav class="toc" aria-label="Projects">
       <a href="#fitbit"><b>Workout burnout early warning</b><span>Machine learning</span></a>
       <a href="#jobs"><b>Spotting fake job postings</b><span>Data assessment</span></a>
+      <a href="#rentsearch"><b>RentSearchGPT</b><span>LLM · custom GPT</span></a>
       <a href="#hertz"><b>Car rental database</b><span>SQL · data modeling</span></a>
       <a href="#tableau"><b>Tableau work</b><span>Visualization</span></a>
       <a href="#cases"><b>Security case analyses</b><span>Risk · writing</span></a>
@@ -291,6 +292,41 @@ footer{padding-block:40px;color:var(--muted);font-size:14px;display:flex;justify
           <li>Remote postings were fraudulent at 8.3%, nearly double the 4.7% rate for on-site roles.</li>
           <li>Among the 10 countries with the most postings, Australia had the highest fraud rate at 18.7%.</li>
           <li>Salary range was missing from 84% of postings, so I flagged it as too sparse to rely on.</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- RENTSEARCHGPT -->
+    <article class="case" id="rentsearch" aria-labelledby="rent-h">
+      <aside>
+        <span class="tag">LLM · custom GPT</span>
+        <dl>
+          <div><dt>Course</dt><dd>LSU BADM 7302, capstone project</dd></div>
+          <div><dt>When</dt><dd>Fall 2025</dd></div>
+          <div><dt>Data</dt><dd>Tulsa apartment listings I scraped, joined to Google, Yelp and Apartments.com ratings</dd></div>
+          <div><dt>Tools</dt><dd>Python · Selenium · ChatGPT custom GPT builder</dd></div>
+        </dl>
+      </aside>
+      <div class="body">
+        <h3 id="rent-h">Can a chatbot shortlist your next apartment?</h3>
+        <p>People moving to Tulsa, many through the Tulsa Remote program, often have to pick an apartment from across the country. I built RentSearchGPT, a custom GPT that takes a plain-language request ("a pet-friendly studio under $1,500 with parking") and recommends apartments from a dataset I collected, with an explanation of why each one fits.</p>
+        <div class="kpis">
+          <div class="kpi"><b>3</b><span>prompt strategies tested: few-shot, chain-of-thought, tree-of-thought</span></div>
+          <div class="kpi"><b>67 / 80</b><span>tree-of-thought score on an 8-part rubric</span></div>
+          <div class="kpi"><b>2</b><span>failure modes found in testing and fixed</span></div>
+        </div>
+        <h4>How I built it</h4>
+        <ul class="did">
+          <li>Scraped Tulsa apartment listings with Python and Selenium into a CSV: name, address, price tier, bed/bath configuration, square footage and amenities.</li>
+          <li>Joined it on a primary key to ratings and review links I collected from Google, Yelp and Apartments.com.</li>
+          <li>Cleaned it before the model ever saw it: dropped listings with no price, removed hotels the scraper had pulled in, and cut amenities that don't help people compare (internet, trash service, ceiling fans).</li>
+          <li>Uploaded the cleaned file as the GPT's knowledge base and wrote instructions that define each field and the decisions renters weigh: budget, size, location, quality and amenities.</li>
+        </ul>
+        <h4>What testing caught</h4>
+        <ul class="did">
+          <li><b>Vocabulary mismatch.</b> "One-bedroom with a gym" returned nothing because the data said "workout facility." Few-shot examples taught it to map everyday words onto the dataset ("under $1,500" to the $ tier, "two-bedroom" to 2/2, "gym" to workout facility).</li>
+          <li><b>All-or-nothing matching.</b> If one requirement couldn't be met, it returned no results. I told it to show the closest partial matches and explain the trade-offs instead.</li>
+          <li><b>What's next.</b> The tree-of-thought version ranked apartments six ways but didn't combine them into one recommendation, its lowest rubric score. Combining those lists into one ranked pick is the clearest next improvement.</li>
         </ul>
       </div>
     </article>
@@ -437,11 +473,11 @@ footer{padding-block:40px;color:var(--muted);font-size:14px;display:flex;justify
     <div class="sec-head"><h2 id="edu-h">Education</h2></div>
     <div class="edu">
       <div class="deg main">
-        <span class="eyebrow">Expected March 2027</span>
+        <span class="eyebrow">Expected May 2027</span>
         <h3>M.S. in Analytics</h3>
         <p>Louisiana State University</p>
         <ul class="chips">
-          <li class="chip">Machine learning</li><li class="chip">Data wrangling</li><li class="chip">Database design</li><li class="chip">Data visualization</li><li class="chip">Optimization</li><li class="chip">Cybersecurity</li><li class="chip">Industry practicum</li>
+          <li class="chip">Machine learning</li><li class="chip">Data wrangling</li><li class="chip">Database design</li><li class="chip">Data visualization</li><li class="chip">Optimization</li><li class="chip">Cybersecurity</li><li class="chip">Industry client projects</li>
         </ul>
       </div>
       <div class="deg">
@@ -466,7 +502,7 @@ footer{padding-block:40px;color:var(--muted);font-size:14px;display:flex;justify
     <div class="contact">
       <div>
         <h2 id="contact-h">Let's talk data.</h2>
-        <p class="lede" style="margin-top:14px;max-width:40ch">Based in Hope Mills, NC. Finishing my M.S. in Analytics in March 2027 and open to analyst roles.</p>
+        <p class="lede" style="margin-top:14px;max-width:40ch">Based in Hope Mills, NC. Finishing my M.S. in Analytics in May 2027 and open to analyst roles.</p>
       </div>
       <div class="reach">
         <div class="row"><span><small>Email</small>ferguson.tyra@gmail.com</span><button class="copy" type="button" id="copy-email" data-copy="ferguson.tyra@gmail.com">Copy</button></div>
